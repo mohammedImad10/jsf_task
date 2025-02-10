@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Student CRUD</title>
+</h:head>
+<h:body>
+
+    <!-- Student Table Form -->
+    <h:form id="studentsForm">
+
+        <p:dataTable id="studentsTable" value="#{studentBean.students}" var="student">
+            <p:column headerText="ID">
+                <h:outputText value="#{student.id}" />
+            </p:column>
+            <p:column headerText="Name">
+                <h:outputText value="#{student.name}" />
+            </p:column>
+            <p:column headerText="Email">
+                <h:outputText value="#{student.email}" />
+            </p:column>
+            <p:column headerText="Age">
+                <h:outputText value="#{student.age}" />
+            </p:column>
+
+                            <p:column headerText="Actions">
+                                <p:commandButton value="Edit"
+                                                 action="#{studentBean.editStudent(student)}"
+                                                 update=":formPanel"
+                                                 process="@this" />
+
+                                <p:commandButton value="Delete"
+                                                 action="#{studentBean.deleteStudent(student.id)}"
+                                                 update=":studentsForm:studentsTable"
+                                                 styleClass="ui-button-danger" />
+                            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <h:panelGroup>
+        <br />
+    </h:panelGroup>
+     Add/Edit Form
+
+            <h:form id="formPanel">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="name" value="Name" />
+                    <h:inputText id="name" value="#{studentBean.student.name}" />
+
+                    <h:outputLabel for="email" value="Email" />
+                    <h:inputText id="email" value="#{studentBean.student.email}" />
+
+                    <h:outputLabel for="age" value="Age" />
+                    <h:inputText id="age" value="#{studentBean.student.age}" />
+
+                    <p:commandButton value="Save"
+                                     action="#{studentBean.addStudent}"
+                                     update=":studentsForm:studentsTable, :formPanel, messages"
+                                     process="@form"
+                                     ajax="true" />
+
+
+                    <p:commandButton value="Update"
+                                     action="#{studentBean.updateStudent}"
+                                     update=":studentsForm:studentsTable, :formPanel, messages"
+                                     process="@form"
+                                     disabled="#{studentBean.student.id eq null}"
+                                     ajax="true" />
+                    <h:messages id="messages" styleClass="errorMessages" />
+                </h:panelGrid>
+            </h:form>
+
+</h:body>
+</html>
